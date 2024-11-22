@@ -2,10 +2,15 @@ import { useState } from "react";
 import { faBars, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 
 function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.items);
 
+
+  console.log(cartItems)
   return (
     <nav className="bg-red-500 py-5">
       <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between">
@@ -36,13 +41,14 @@ function Header() {
         </div>
 
         <div className="relative text-white text-2xl">
-          <FontAwesomeIcon
+          
+          <Link to='/cart'><FontAwesomeIcon
             icon={faCartShopping}
             style={{ fontSize: "2rem" }}
             className="text-white hover:text-black transition-colors duration-300"
-          />
+          /></Link>
           <div className="absolute top-0 left-7 bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
-            0
+            {cartItems.length}
           </div>
         </div>
       </div>

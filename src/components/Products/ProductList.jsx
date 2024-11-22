@@ -3,10 +3,13 @@ import Loading from "../../utilits/Loading";
 import { useFetch } from "../../utilits/useFetchHook";
 import './product.css'
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../utilits/Store/cartSlice";
 
 function ProductList() {
   const { data, error, loading } = useFetch("https://dummyjson.com/products");
   const [searchTerm, setSearchTerm] = useState('');
+  const dispatch = useDispatch();
 
   if (loading) return <Loading />;
   if(error) return <p>Error : {error}</p>
@@ -15,6 +18,9 @@ function ProductList() {
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleAddToCart = (product) => {
+    dispatch(addItem(product)); // Dispatch the action to add the product to the cart
+  };
 
   return (
     <>
@@ -47,9 +53,15 @@ function ProductList() {
                 {product.description.substring(0, 50)}...
               </p>
               <p className="product-price">Price: ${product.price}</p>
-              <Link to={`/products/${product.id}`} className="details-button">
+              <Link to={`/products/${product.id}`}  className="details-button">
                 View Details
               </Link>
+              <button
+                    className="add-to-cart"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Add to Cart
+              </button>
             </div>
           </div>
         ))}

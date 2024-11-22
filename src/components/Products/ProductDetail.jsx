@@ -1,15 +1,19 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useFetch } from "../../utilits/useFetchHook";
+import Loading from "../../utilits/Loading";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../utilits/Store/cartSlice";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { data, error, loading } = useFetch(
     `https://dummyjson.com/products/${id}`
   );
+  const dispatch = useDispatch();
 
   if (loading)
-    return <p className="text-center text-lg">Loading product details...</p>;
+    return <Loading/>;
   if (error) return <p className="text-center text-red-500">Error: {error}</p>;
 
   const {
@@ -25,6 +29,11 @@ const ProductDetail = () => {
     shippingInformation,
     availabilityStatus,
   } = data;
+
+
+  const handleAddToCart = () => {
+    dispatch(addItem(data)); // Dispatch addItem action with the product data
+  };
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -67,12 +76,13 @@ const ProductDetail = () => {
         <p>
           <strong>Brand:</strong> {brand}
         </p>
-        <button className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
+        <button 
+        onClick={handleAddToCart} 
+        className="px-6 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition">
           Add to Cart
         </button>
       </div>
 
-      {/* Warranty, Shipping, and Availability */}
       <div className="border-t border-gray-200 pt-6">
         <p>
           <strong>Warranty:</strong> {warrantyInformation}
