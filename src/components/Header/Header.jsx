@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
 
   console.log(cartItems)
@@ -32,7 +33,7 @@ function Header() {
           <Link to="/" className="hover:text-black font-bold">
             Home
           </Link>
-          <Link to="/allproduct" className="hover:text-black font-bold">
+          <Link to="/allproducts" className="hover:text-black font-bold">
             All Products
           </Link>
           <Link to="/aboutus" className="hover:text-black font-bold">
@@ -48,7 +49,7 @@ function Header() {
             className="text-white hover:text-black transition-colors duration-300"
           /></Link>
           <div className="absolute top-0 left-7 bg-white text-black rounded-full text-xs w-5 h-5 flex items-center justify-center">
-            {cartItems.length}
+            {totalItems}
           </div>
         </div>
       </div>
@@ -58,15 +59,15 @@ function Header() {
           isMobileMenuOpen ? "block" : "hidden"
         } bg-red-500 text-center py-4`}
       >
-        <a href="#home" className="block text-white py-2">
+        <Link to="/" className="block text-white py-2">
           Home
-        </a>
-        <a href="#products" className="block text-white py-2">
+        </Link>
+        <Link to="allproducts" className="block text-white py-2">
           All Products
-        </a>
-        <a href="#about" className="block text-white py-2">
+        </Link>
+        <Link to="about" className="block text-white py-2">
           About Us
-        </a>
+        </Link>
       </div>
     </nav>
   );
